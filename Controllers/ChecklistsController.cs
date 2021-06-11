@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,17 @@ namespace ToDo.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+        // GET: Items/ShowSearchForm
+        public async Task<IActionResult> ShowSearchForm()
+        {
+            return View();
+        }
+        // POST: Items/ShowSearchResults
+        public async Task<IActionResult> ShowSearchResults(String SearchPhrase)
+        {
+            return View("Index", await _context.Checklist.Where(i => i.Description.Contains(SearchPhrase)
+                        || i.ChecklistName.Contains(SearchPhrase)).ToListAsync());
         }
 
         // POST: Checklists/Create
